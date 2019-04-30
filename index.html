@@ -3,26 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>GHAR</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/style.css">
     <script type="text/javascript" src="dist/paper-full.js"></script>
     <script type="text/paperscript" canvas="canvas">
 
    
         // Create a point-text item at {x: 100, y: 100}:
         var text = new PointText(new Point(100, 100));
-        text.fillColor = 'green';
+        text.fillColor = 'red';
         text.fontSize = '100';
         text.content = 'H';
+        text.rotate(20);
 
         var letters = new Array;
         letters.push(text);
 
-        //var path;
-        //var circles = [];
-        //var path = new Path.Circle(new Point(100, 70), 50);
-        
-        //var myCircle = new Path.Circle(new Point(100, 70), 50);
-        //myCircle.fillColor = 'black';
 
         // Mouse tool state
         var isDrawing = false;
@@ -43,6 +38,16 @@
             // Should we be dragging something?
             if (draggingIndex > -1) {
                 letters[draggingIndex].position = event.point;
+                console.log(text.point.x);
+                if (text.point.x > '600'){
+                    text.rotate(100);
+                } else {}
+                if (text.point.y > '600'){
+                    text.fillColor = 'green';
+                } else {
+                    text.fillColor = 'red';
+                }
+
             } else {
                   //letters.removeOnDrag();
                   isDrawing = true;
@@ -53,11 +58,12 @@
             if (isDrawing) {
                 //circles.push(path);
             }
-
             // Reset the tool state
             isDrawing = false;
             draggingIndex = -1;
         };
+
+
         
 
 
