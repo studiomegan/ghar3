@@ -12,8 +12,7 @@
         text.fillColor = 'black';
         text.fontSize = '100';
         text.content = 'H';
-
-        var letters = [];
+        
         letters.push(text);
 
         var path;
@@ -43,7 +42,6 @@
             if (draggingIndex > -1) {
                 letters[draggingIndex].position = event.point;
             } else {
-                  path.removeOnDrag();
                   isDrawing = true;
             }
         };
