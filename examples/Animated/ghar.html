@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>GHAR</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+
+    </style>
+    <script type="text/javascript" src="../../dist/paper-full.js"></script>
+    <script type="text/paperscript" canvas="canvas">
+
+   
+        // Create a point-text item at {x: 100, y: 100}:
+        var hoek_start = 20;
+        var hoek_end = 90;
+        var text = new PointText(new Point(100, 100));
+
+        tool.fixedDistance = 10;
+
+        text.fillColor = 'red';
+        text.fontSize = '100';
+        text.content = 'H';
+        text.rotate(hoek_start);
+        var lala = 10;
+        text.skew(lala);
+
+        var elmnt = document.getElementById("canvas");
+        var xmax = elmnt.offsetWidth;
+        var ymax = elmnt.offsetHeight;
+
+        var x_prev  = x_start;
+
+        var x_start =   xmax/10;
+        var x_end   = 2*xmax/10;
+        var rotatie_per_pixel = ((hoek_end-hoek_start)/(x_end-x_start));
+
+        var letters = new Array;
+        letters.push(text);
+
+
+        // Mouse tool state
+        var isDrawing = false;
+        var draggingIndex = -1;
+
+        //event.point = current mouse positon
+        function onMouseDrag(event) {
+           // Maybe hit test to see if we are on top of a circle
+            if (!isDrawing && letters.length > 0) {
+                for (var ix = 0; ix < letters.length; ix++) {
+                    if (letters[ix].contains(event.point)) {
+                        draggingIndex = ix;
+                        break;
+                    }
+                }
+            }
+        
+            // Should we be dragging something?
+            if (draggingIndex > -1) {
+                letters[draggingIndex].position = event.point;
+                //console.log(Math.round(text.point.x));
+                console.log(' 1 >>>' ,text.point.x);
+                // eind punt is 80% of viewwidth
+                //var eind = (80 * txt) / 100;
+                if (text.point.x > x_start && text.point.x < x_end){
+                    if(x_prev < text.point.x){
+                        var x_rel = text.point.x - x_start;
+                        text.rotate(x_rel*rotatie_per_pixel);
+                    } else {
+                        var x_rel = x_end - text.point.x;
+                        text.rotate(-x_rel*rotatie_per_pixel);
+                    }
+                    x_prev = text.point.x;
+                    console.log(' 2 >>>' ,x_rel);
+                    console.log(' 3 >>>' ,x_prev);
+                    console.log(' 4 >>>' ,rotatie_per_pixel);
+                }
+                //if (text.point.x > '600'){
+                //    text.rotate(3);     
+                //}
+                if (text.point.y > 100){
+                    text.fillColor.hue += 1;
+                }
+
+            } else {
+                  //letters.removeOnDrag();
+                  isDrawing = true;
+            }
+        
+        };//end of onMouseDrag
+
+        function onMouseUp(event) {
+            if (isDrawing) {
+                //circles.push(path);
+            }
+            // Reset the tool state
+            isDrawing = false;
+            draggingIndex = -1;
+        };
+
+        function myFunction() {
+          var elmnt = document.getElementById("canvas");
+          var txt = elmnt.offsetHeight;
+          console.log(txt);
+        }
+        
+
+
+        //POSITION FUNCTION
+        /*function onMouseMove(event) {
+            // Each time the mouse is moved, set the content of
+            // the point text to describe the position of the mouse:
+            text.content = 'Your position is: ' + event.point.toString();
+        }*/
+
+
+    </script>
+</head>
+<body>
+    <canvas id="canvas" resize></canvas>
+</body>
+</html>
